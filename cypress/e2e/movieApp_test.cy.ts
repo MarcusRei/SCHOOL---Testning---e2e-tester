@@ -59,4 +59,16 @@ describe("movieApp tests", () => {
 
     cy.wait("@movieCall").its("request.url").should("contain", "omdbapi");
   });
+
+  it("should show error message when input field contains anything other than letters or numbers", () => {
+    let searchTerm: string = "!!!";
+    cy.visit("http://localhost:1234");
+
+    cy.get("input").type(searchTerm).should("have.value", searchTerm);
+    cy.get("#search").click();
+    cy.get("#movie-container:first").should(
+      "contain.text",
+      "Inga sökresultat att visa"
+    );
+  });
 });
